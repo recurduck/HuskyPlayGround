@@ -10,5 +10,8 @@ branch=$(git rev-parse --symbolic --abbrev-ref HEAD)
 echo Main branch must Pass all Jest Tests before push
 if [[ "$branch" =~ ^Versions\/.* ]];
 then
-    npm test
+    if ! npm test;
+    then
+        exit 1
+    fi
 fi
