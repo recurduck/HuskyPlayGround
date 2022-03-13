@@ -7,11 +7,8 @@
 branch=$(git rev-parse --symbolic --abbrev-ref HEAD)
 
 #Check if the current branch is one of the main branches
-echo Main branch must Pass all Jest Tests before push
-if [[ "$branch" =~ ^Versions\/.* ]];
+# echo Main branch must Pass all Jest Tests before push
+if [[ "$branch" =~ ^Version\/.* ]];
 then
-    if ! npm test;
-    then
-        exit 1
-    fi
+    npm test
 fi
