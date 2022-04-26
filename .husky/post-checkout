@@ -1,0 +1,22 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+PREV_BRANCH=$(git rev-parse --symbolic --abbrev-ref @{-1})
+CURR_BRANCH=$(git rev-parse --symbolic --abbrev-ref HEAD)
+
+regex="^[0-9a-z]+\/([0-9.]+)[/0-9a-z]*"
+[[ $PREV_BRANCH =~ $regex ]] && PREV_BRANCH_FIXVERSION="${BASH_REMATCH[1]}" 
+[[ $CURR_BRANCH =~ $regex ]] && CURR_BRANCH_FIXVERSION="${BASH_REMATCH[1]}" 
+
+echo "$PREV_BRANCH_FIXVERSION=>$CURR_BRANCH_FIXVERSION"
+
+if [ "$CURR_BRANCH_FIXVERSION" != "$PREV_BRANCH_FIXVERSION" ];
+then
+    if ! command -v pnpm &> /dev/null
+    then
+        echo "need install pnpm"
+        npm install -g pnpm
+    fi
+    echo "pnpm install"
+    pnpm install 
+fi
